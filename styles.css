@@ -11,25 +11,25 @@ body {
   background-color: #343541;
   display: flex;
 }
-.side-bar{
-    padding: 10px;
-    background-color: #474858;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
+.side-bar {
+  padding: 10px;
+  background-color: #474858;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
 }
-.side-bar button{
-    background: transparent;
-    border: 5px solid#343541;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 400;
-    cursor: pointer;
+.side-bar button {
+  background: transparent;
+  border: 5px solid#343541;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
 }
-.note{
-    text-align: center;
-    font-size: 11px;
-    padding: 5px;
+.note {
+  text-align: center;
+  font-size: 11px;
+  padding: 5px;
 }
 
 h1 {
@@ -103,7 +103,6 @@ input:focus {
   background: transparent;
   flex-direction: column;
   height: 80%;
-
 }
 .history p {
   cursor: pointer;
