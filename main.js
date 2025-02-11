@@ -1,62 +1,63 @@
-const submitButton = document.querySelector("#submit");
-const inputElement = document.querySelector("input");
-const historyElement = document.querySelector(".history");
-const mainElement = document.querySelector(".main");
-const newChatButton = document.querySelector(".new-chat-button");
 
-const API_KEY = "AIzaSyD9gaGj-SplGCHJDPTOEboI1RmuiNEBS4c";
-const API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-
-let conversationHistory = [];
-
-async function getMessage(userMessage) {
-  try {
-    const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: userMessage,
-              },
-            ],
-          },
-        ],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        },
-      }),
-    });
-
-    const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
-  } catch (error) {
-    console.error("Error:", error);
-    return "An error occurred while fetching the response.";
-  }
+function displayMessage(message, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+    messageDiv.textContent = message;
+    mainElement.appendChild(messageDiv);
+    mainElement.scrollTop = mainElement.scrollHeight;
 }
 
-function addToHistory(message, isUser = false) {
-  const timestamp = new Date().toLocaleTimeString();
-  const historyItem = document.createElement("p");
-  historyItem.textContent = `${
-    isUser ? "You" : "AI"
-  } (${timestamp}): ${message}`;
-  historyElement.appendChild(historyItem);
+async function handleSubmit(event) {
+    event.preventDefault();
+    
+    const userMessage = inputElement.value.trim();
+    if (!userMessage) return;
+    
+    // Clear input
+    inputElement.value = '';
+    
+    // Display and save user message
+    displayMessage(userMessage, true);
+    addToHistory(userMessage, true);
+    
+    // Disable input while waiting for response
+    inputElement.disabled = true;
+    submitButton.disabled = true;
+    
+    try {
+        // Get and display AI response
+        const response = await getMessage(userMessage);
+        displayMessage(response, false);
+        addToHistory(response);
+    } catch (error) {
+        console.error('Error:', error);
+        displayMessage('An error occurred. Please try again.', false);
+    } finally {
+        // Re-enable input
+        inputElement.disabled = false;
+        submitButton.disabled = false;
+        inputElement.focus();
+    }
+}
 
-  conversationHistory.push({
-    role: isUser ? "user" : "assistant",
-    message: message,
-    timestamp: timestamp,
-  });
-
-  localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
+// Function to start a new chat
+function startNewChat() {
+    // Clear the main chat area
+    mainElement.innerHTML = '';
+    
+    // Clear the history sidebar
+    historyElement.innerHTML = '';
+    
+    // Clear the conversation history array
+    conversationHistory = [];
+    
+    // Clear localStorage
+    localStorage.removeItem('chatHistory');
+    
+    // Clear input field
+    inputElement.value = '';
+    
+    // Add initial greeting message
+    displayMessage('How can I help you today?', false);
 }
