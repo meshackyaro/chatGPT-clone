@@ -1,11 +1,9 @@
-// Get DOM elements
 const submitButton = document.querySelector("#submit");
 const inputElement = document.querySelector("input");
 const historyElement = document.querySelector(".history");
 const mainElement = document.querySelector(".main");
-const newChatButton = document.querySelector(".new-chat-button"); // Add this line
+const newChatButton = document.querySelector(".new-chat-button");
 
-// Replace with your actual API key from Google AI Studio
 const API_KEY = "AIzaSyD9gaGj-SplGCHJDPTOEboI1RmuiNEBS4c";
 const API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
@@ -54,13 +52,11 @@ function addToHistory(message, isUser = false) {
   } (${timestamp}): ${message}`;
   historyElement.appendChild(historyItem);
 
-  // Save to conversation history
   conversationHistory.push({
     role: isUser ? "user" : "assistant",
     message: message,
     timestamp: timestamp,
   });
 
-  // Save to localStorage
   localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
 }
