@@ -1,3 +1,4 @@
+
 function displayMessage(message, isUser = false) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message');

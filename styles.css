@@ -1,235 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 * {
-    color: #fff;
-    font-family: 'open sans', sans-serif;
+  color: #fff;
+  font-family: "open sans", sans-serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: #343541;
-    display: flex;
+  margin: 0;
+  padding: 0;
+  background-color: #343541;
+  display: flex;
 }
-.side-bar{
-    padding: 10px;
-    background-color: #474858;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-}
-.side-bar button{
-    background: transparent;
-    border: 5px solid#343541;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 400;
-    cursor: pointer;
-}
-.note{
-    text-align: center;
-    font-size: 11px;
-    padding: 5px;
-}
-
-h1  {
-    font-size: 33px;
-    font-weight: 600;
-    padding: 200px 0;
-}
-
 .side-bar {
-    background-color: #202123;
-    width: 244px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
-    left: 0;
-    top: 0;
+  padding: 10px;
+  background-color: #474858;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.side-bar button {
+  background: transparent;
+  border: 5px solid#343541;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.note {
+  text-align: center;
+  font-size: 11px;
+  padding: 5px;
 }
 
-.main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: space-between;
-    height: 100vh;
-    margin-left: 244px; /* Same as sidebar width */
-    width: calc(100% - 244px); /* Adjust main content width */
-}
-
-.info {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
-    padding: 10px;
-}
-
-input {
-    border: none;
-    background-color: rgba(255, 255, 255, 0.5);
-    width: 100%;
-    font-size: 20px;
-    padding: 12px 15px;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 54px 55px,
-    rgba(0, 0, 0, 0.05) 0px -12px 30px,
-    rgba(0, 0, 0, 0.05) 0 4px 6px,
-    rgba(0, 0, 0, 0.05) 0 12px 3px,
-    rgba(0, 0, 0, 0.09) 0 -3px 5px;
-}
-
-input:focus {
-    outline: none;
-}
-
-.bottom-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 10px;
-}
-
-.input-container {
-    position: relative;
-    width: 100%;
-    max-width: 650px;
-}
-
-.input-container #submit {
-    position: absolute;
-    right: 0;
-    bottom: 15px;
-    cursor: pointer;
-}
-
-button {
-    background-color: transparent;
-    padding: 10px;
-    border: solid 0.5px rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-}
-
-nav {
-    border-top: solid 0.5px rgba(255, 255, 255, 0.5);
-    padding: 10px;
-    margin: 10px;
-    width: calc(100% - 40px); /* Account for padding and margin */
-}
-
-.button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.history {
-    padding: 10px;
-    margin: 10px;
-    display: flex;
-    background: transparent;
-    flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.history p {
-    cursor: pointer;
-}
-
-/* Media Queries */
-
-/* For tablets and smaller desktops */
-@media screen and (max-width: 1024px) {
-    h1 {
-        font-size: 28px;
-        padding: 150px 0;
-    }
-
-    .side-bar {
-        width: 200px;
-    }
-
-    .main {
-        margin-left: 200px;
-        width: calc(100% - 200px);
-    }
-
-    .input-container {
-        max-width: 500px;
-    }
-}
-
-/* For tablets in portrait and larger mobile devices */
-@media screen and (max-width: 768px) {
-    body {
-        flex-direction: column;
-    }
-
-    .side-bar {
-        width: 100%;
-        height: auto;
-        min-height: 60px;
-        position: relative;
-    }
-
-    .main {
-        margin-left: 0;
-        width: 100%;
-        height: calc(100vh - 60px);
-    }
-
-    h1 {
-        padding: 100px 0;
-        font-size: 24px;
-    }
-
-    .history {
-        flex-direction: row;
-        overflow-x: auto;
-        height: auto;
-    }
-
-    .history p {
-        margin: 0 10px;
-        white-space: nowrap;
-    }
-
-    nav {
-        width: calc(100% - 20px);
-    }
-}
-
-/* For mobile devices */
-@media screen and (max-width: 480px) {
-    h1 {
-        padding: 50px 0;
-        font-size: 20px;
-    }
-
-    input {
-        font-size: 16px;
-        padding: 8px 12px;
-    }
-
-    .bottom-section {
-        padding: 5px;
-    }
-
-    .input-container {
-        max-width: 95%;
-    }
-
-    button {
-        padding: 8px;
-        margin: 5px;
-    }
-
-    .info {
-        font-size: 10px;
-    }
+h1 {
+  font-size: 33px;
+  font-weight: 600;
+  padding: 200px 0;
 }
