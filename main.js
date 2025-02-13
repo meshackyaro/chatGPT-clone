@@ -22,12 +22,15 @@ async function loadConfig() {
   }
 }
 
-// Call loadConfig to set API_KEY before making requests
-loadConfig();
+// Ensure API key is loaded before making requests
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadConfig();
+  loadChatHistory();
+});
 
 async function getMessage(userMessage) {
   if (!API_KEY) {
-    console.error("API Key is missing or not loaded yet!");
+    console.error("API Key is missing!");
     return "API key is not available. Please try again.";
   }
 
@@ -40,11 +43,7 @@ async function getMessage(userMessage) {
       body: JSON.stringify({
         contents: [
           {
-            parts: [
-              {
-                text: userMessage,
-              },
-            ],
+            parts: [{ text: userMessage }],
           },
         ],
         generationConfig: {
@@ -76,55 +75,75 @@ function addToHistory(message, isUser = false) {
 
   conversationHistory.push({
     role: isUser ? "user" : "assistant",
-    message: message,
-    timestamp: timestamp,
+    message,
+    timestamp,
   });
-
   localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
 }
 
-// Add styles for messages
-const style = document.createElement("style");
-style.textContent = `
-    .message {
-        padding: 15px;
-        margin: 10px;
-        border-radius: 5px;
-        max-width: 80%;
-        word-wrap: break-word;
-    }
+function displayMessage(message, isUser = false) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", isUser ? "user-message" : "ai-message");
+  messageDiv.textContent = message;
+  mainElement.appendChild(messageDiv);
+  mainElement.scrollTop = mainElement.scrollHeight;
+}
 
-    .user-message {
-        background-color: #2b2c2f;
-        align-self: flex-end;
-        margin-left: auto;
-    }
+async function handleSubmit(event) {
+  event.preventDefault();
 
-    .ai-message {
-        background-color: #444654;
-        align-self: flex-start;
-        margin-right: auto;
-    }
+  const userMessage = inputElement.value.trim();
+  if (!userMessage) return;
 
-    .main {
-        padding: 20px;
-        overflow-y: auto;
-    }
+  inputElement.value = "";
+  displayMessage(userMessage, true);
+  addToHistory(userMessage, true);
 
-    .new-chat-button {
-        width: calc(100% - 20px);
-        margin: 10px;
-        padding: 10px;
-        background-color: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+  inputElement.disabled = true;
+  submitButton.disabled = true;
 
-    .new-chat-button:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-`;
-document.head.appendChild(style);
+  try {
+    const response = await getMessage(userMessage);
+    displayMessage(response, false);
+    addToHistory(response);
+  } catch (error) {
+    console.error("Error:", error);
+    displayMessage("An error occurred. Please try again.", false);
+  } finally {
+    inputElement.disabled = false;
+    submitButton.disabled = false;
+    inputElement.focus();
+  }
+}
+
+function startNewChat() {
+  mainElement.innerHTML = "";
+  historyElement.innerHTML = "";
+  conversationHistory = [];
+  localStorage.removeItem("chatHistory");
+  inputElement.value = "";
+  displayMessage("How can I help you today?", false);
+}
+
+function loadChatHistory() {
+  const savedHistory = localStorage.getItem("chatHistory");
+  if (savedHistory) {
+    conversationHistory = JSON.parse(savedHistory);
+    conversationHistory.forEach((item) => {
+      displayMessage(item.message, item.role === "user");
+      const historyItem = document.createElement("p");
+      historyItem.textContent = `${item.role === "user" ? "You" : "AI"} (${
+        item.timestamp
+      }): ${item.message}`;
+      historyElement.appendChild(historyItem);
+    });
+  } else {
+    displayMessage("How can I help you today?", false);
+  }
+}
+
+submitButton.addEventListener("click", handleSubmit);
+inputElement.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") handleSubmit(e);
+});
+newChatButton.addEventListener("click", startNewChat);
