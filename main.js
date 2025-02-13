@@ -82,3 +82,49 @@ function addToHistory(message, isUser = false) {
 
   localStorage.setItem("chatHistory", JSON.stringify(conversationHistory));
 }
+
+// Add styles for messages
+const style = document.createElement("style");
+style.textContent = `
+    .message {
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+
+    .user-message {
+        background-color: #2b2c2f;
+        align-self: flex-end;
+        margin-left: auto;
+    }
+
+    .ai-message {
+        background-color: #444654;
+        align-self: flex-start;
+        margin-right: auto;
+    }
+
+    .main {
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .new-chat-button {
+        width: calc(100% - 20px);
+        margin: 10px;
+        padding: 10px;
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .new-chat-button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+`;
+document.head.appendChild(style);
