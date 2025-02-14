@@ -57,11 +57,3 @@ h1 {
   font-size: 33px;
   font-weight: 600;
 }
-
-.bottom-section {
-  width: 100%;
-  position: fixed;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-}
